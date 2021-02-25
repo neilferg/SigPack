@@ -150,7 +150,7 @@ public:
             else
                 tmp = aa_filt(0.0);
             if(n%Q==0)
-                out[n/Q] = P*tmp;
+                out[n/Q] = static_cast<T1>(P)*tmp;
         }
     }
 };
