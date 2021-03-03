@@ -11,14 +11,14 @@ namespace sp
     /// \brief Math functions.
     /// @{
 
-    const double PI   = 3.14159265358979323846;     ///< ... _or use arma::datum::pi_
-    const double PI_2 = 6.28318530717958647692;
+    const arma::arma_flt PI   = 3.14159265358979323846;     ///< ... _or use arma::datum::pi_
+    const arma::arma_flt PI_2 = 6.28318530717958647692;
 
     ////////////////////////////////////////////////////////////////////////////////////////////
     /// \brief A sinc, sin(x)/x, function.
     /// @param x The angle in radians
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline double sinc( double x )
+    arma_inline arma::arma_flt sinc( arma::arma_flt x )
     {
         if(x==0.0)
             return 1.0;
@@ -47,9 +47,9 @@ namespace sp
     /// See bessel functions on [Wikipedia](https://en.wikipedia.org/wiki/Bessel_function)
     /// @param x
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline double besseli0( double x )
+    arma_inline arma::arma_flt besseli0( arma::arma_flt x )
     {
-        double y=1.0,s=1.0,x2=x*x,n=1.0;
+        arma::arma_flt y=1.0,s=1.0,x2=x*x,n=1.0;
         while (s > y*1.0e-9)
         {
             s *= x2/4.0/(n*n);
@@ -64,7 +64,7 @@ namespace sp
     /// @param x Complex input value
     ////////////////////////////////////////////////////////////////////////////////////////////
     template <typename T>
-    double angle( const std::complex<T>& x )
+    arma::arma_flt angle( const std::complex<T>& x )
     {
         return std::arg(x);
     }
@@ -103,8 +103,8 @@ namespace sp
     arma_inline arma::vec unwrap( const arma::vec& x )
     {
         arma::vec P;
-        double pacc = 0, pdiff = 0;
-        const double thr=PI*170/180;
+        arma::arma_flt pacc = 0, pdiff = 0;
+        const arma::arma_flt thr=PI*170/180;
         P.copy_size(x);
         P(0)=x(0);
         for(unsigned int r=1; r<x.n_rows; r++)
@@ -128,7 +128,7 @@ namespace sp
     /// @param N  Number of data points
     /// @param Fs Sample rate
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline arma::vec timevec( const int N, const double Fs )
+    arma_inline arma::vec timevec( const int N, const arma::arma_flt Fs )
     {
         return arma::regspace(0,N-1.0)/Fs;
     }

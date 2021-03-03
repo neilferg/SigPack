@@ -8,7 +8,7 @@
 namespace sp
 {
     #define FCN_XUW [=](arma::mat x,arma::mat u,arma::mat w)     // Lambda function f(x,u,w) ([capture] by copy)
-    using fcn_t = std::function< double(arma::mat,arma::mat,arma::mat) >;
+    using fcn_t = std::function< arma::arma_flt(arma::mat,arma::mat,arma::mat) >;
     using fcn_v = std::vector<fcn_t>;
     using fcn_m = std::vector<fcn_v>;
 
@@ -73,7 +73,7 @@ namespace sp
     /// @param A  Output - discrete system model
     /// @param Q  Output - discrete state noise cov matrix
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline void lti2discr(const arma::mat& F,const arma::mat& W, const arma::mat& Qc, const double dT, arma::mat& A,arma::mat& Q)
+    arma_inline void lti2discr(const arma::mat& F,const arma::mat& W, const arma::mat& Qc, const arma::arma_flt dT, arma::mat& A,arma::mat& Q)
     {
         arma::uword M = F.n_rows;
 
@@ -292,7 +292,7 @@ namespace sp
         protected:
             fcn_m f_jac;            ///< Matrix of Extended Kalman state transition jacobian
             fcn_m h_jac;            ///< Matrix of Extended Kalman measurement transition jacobian
-            double dx;              ///< Finite difference approximation step size
+            arma::arma_flt dx;              ///< Finite difference approximation step size
         public:
 
             EKF(arma::uword _N,arma::uword _M,arma::uword _L): KF(_N,_M,_L)
@@ -303,7 +303,7 @@ namespace sp
             ////////////////////////////////////////////////////////////////////////////////////////////
             //  Set/get functions
             ////////////////////////////////////////////////////////////////////////////////////////////
-            void set_diff_step(double _dx)  { dx  = _dx;    }   // Set diff step size
+            void set_diff_step(arma::arma_flt _dx)  { dx  = _dx;    }   // Set diff step size
             void set_state_jac(fcn_m _f)    { f_jac = _f;   }   // Set EKF state transition jacobian
             void set_meas_jac(fcn_m _h)     { h_jac = _h;   }   // Set EKF measurement transition jacobian
 
@@ -510,10 +510,10 @@ namespace sp
     class UKF: public KF
     {
         protected:
-            double    alpha;     ///< Spread factor of sigma points
-            double    beta;      ///< x distr. prior knowledge factor
-            double    kappa;     ///< Scaling par.
-            double    lambda;
+            arma::arma_flt    alpha;     ///< Spread factor of sigma points
+            arma::arma_flt    beta;      ///< x distr. prior knowledge factor
+            arma::arma_flt    kappa;     ///< Scaling par.
+            arma::arma_flt    lambda;
 
             arma::mat X;         ///< Sigma points
             arma::mat S;         ///< Output covariance
@@ -536,10 +536,10 @@ namespace sp
             ////////////////////////////////////////////////////////////////////////////////////////////
             //  Set/get functions
             ////////////////////////////////////////////////////////////////////////////////////////////
-            void set_alpha(double _a)  { alpha   = _a;    }   // Set alpha
-            void set_beta(double _b)   { beta    = _b;    }   // Set beta
-            void set_kappa(double _k)  { kappa   = _k;    }   // Set kappa
-            void set_lambda(double _l) { lambda  = _l;    }   // Set lambda
+            void set_alpha(arma::arma_flt _a)  { alpha   = _a;    }   // Set alpha
+            void set_beta(arma::arma_flt _b)   { beta    = _b;    }   // Set beta
+            void set_kappa(arma::arma_flt _k)  { kappa   = _k;    }   // Set kappa
+            void set_lambda(arma::arma_flt _l) { lambda  = _l;    }   // Set lambda
 
             ////////////////////////////////////////////////////////////////////////////////////////////
             /// \brief Calculate sigma point weights

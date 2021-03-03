@@ -54,7 +54,7 @@ template <class T1>
 class resampling
 {
 private:
-    FIR_filt<T1,double,T1> aa_filt;
+    FIR_filt<T1,arma::arma_flt,T1> aa_filt;
     arma::vec H;         ///< Filter coefficients
     arma::vec K;         ///< Number of filter coefficients
     arma::uword P;       ///< Upsampling rate

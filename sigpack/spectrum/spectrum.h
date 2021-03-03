@@ -22,7 +22,7 @@ namespace sp
     arma::cx_vec spectrum(const arma::Col<T1>& x, const arma::vec& W)
     {
         arma::cx_vec Pxx(x.size());
-        double wc = sum(W);     // Window correction factor
+        arma::arma_flt wc = sum(W);     // Window correction factor
         Pxx = fft(x % W)/wc;    // FFT calc
         return Pxx;
     }
@@ -80,7 +80,7 @@ namespace sp
             arma::vec W(Nfft);
 
             W = hamming(Nfft);
-            arma::uword U = static_cast<arma::uword>(floor((N-Noverl)/double(D)));
+            arma::uword U = static_cast<arma::uword>(floor((N-Noverl)/arma::arma_flt(D)));
             Pw.set_size(Nfft,U);
             Pw.zeros();
 
@@ -183,14 +183,14 @@ namespace sp
     /// @param f Frequency index
     ////////////////////////////////////////////////////////////////////////////////////////////
     template <class T1>
-    std::complex<double> goertzel(const arma::Col<T1>& x, const double f)
+    std::complex<arma::arma_flt> goertzel(const arma::Col<T1>& x, const arma::arma_flt f)
     {
         // Constants
         arma::uword N = x.size();
-        double      Q = f/N;
-        double      A = PI_2*Q;
-        double      B = 2*cos(A);
-        std::complex<double> C(cos(A),-sin(A));
+        arma::arma_flt      Q = f/N;
+        arma::arma_flt      A = PI_2*Q;
+        arma::arma_flt      B = 2*cos(A);
+        std::complex<arma::arma_flt> C(cos(A),-sin(A));
         // States
         T1 s0 = 0;
         T1 s1 = 0;

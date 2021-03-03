@@ -256,7 +256,7 @@ namespace sp
             /// @param y y value
             /// @param label label string
             ////////////////////////////////////////////////////////////////////////////////////////////
-            void label(const double& x, const double& y, const char* label)
+            void label(const arma::arma_flt& x, const arma::arma_flt& y, const char* label)
             {
                 std::ostringstream tmp_s;
                 tmp_s << "set label \"" << label << "\" at " << x << "," << y;
@@ -281,7 +281,7 @@ namespace sp
             /// @param xmin xmin
             /// @param xmax xmax
             ////////////////////////////////////////////////////////////////////////////////////////////
-            void xlim(const double xmin, const double xmax)
+            void xlim(const arma::arma_flt xmin, const arma::arma_flt xmax)
             {
                 std::ostringstream tmp_s;
                 tmp_s << "set xrange [" << xmin << ":" << xmax << "]";
@@ -294,7 +294,7 @@ namespace sp
             /// @param ymin ymin
             /// @param ymax ymax
             ////////////////////////////////////////////////////////////////////////////////////////////
-            void ylim(const double ymin, const double ymax)
+            void ylim(const arma::arma_flt ymin, const arma::arma_flt ymax)
             {
                 std::ostringstream tmp_s;
                 tmp_s << "set yrange [" << ymin << ":" << ymax << "]";
@@ -331,7 +331,7 @@ namespace sp
             template <typename T1>
             void plot_add( const T1& y, const std::string lb, const std::string ls="lines")
             {
-                arma::vec x=arma::regspace(0,double(y.n_elem-1));
+                arma::vec x=arma::regspace(0,arma::arma_flt(y.n_elem-1));
                 plot_data_s pd;
 
                 pd.linespec = ls;
@@ -348,7 +348,7 @@ namespace sp
             ////////////////////////////////////////////////////////////////////////////////////////////
             void plot_add_mat( const arma::mat& y)
             {
-                arma::vec x=arma::regspace(0,double(y.n_cols-1));
+                arma::vec x=arma::regspace(0,arma::arma_flt(y.n_cols-1));
                 plot_data_s pd;
 
                 pd.linespec = "lines";
@@ -368,7 +368,7 @@ namespace sp
             ////////////////////////////////////////////////////////////////////////////////////////////
             void plot_add_mat( const arma::mat& y, const std::string p_lb)
             {
-                arma::vec x=arma::regspace(0,double(y.n_cols-1));
+                arma::vec x=arma::regspace(0,arma::arma_flt(y.n_cols-1));
                 plot_data_s pd;
                 pd.linespec = "lines";
 
