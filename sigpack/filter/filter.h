@@ -3,6 +3,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #ifndef SP_FILTER_H
 #define SP_FILTER_H
+
+//#include <cmath>  // NF_DEBUG needs [c]math.h for sin & cos
+
 namespace sp
 {
     ///
@@ -741,10 +744,10 @@ namespace sp
         {
             b_tmp=std::complex<double>(b(0),0);
             for(arma::uword m=1;m<M;m++)
-                b_tmp+= b(m)*(cos(m*PI*k/K)-i*sin(m*PI*k/K));
+                b_tmp+= b(m)*(std::cos(m*PI*k/K)-i*std::sin(m*PI*k/K));
             a_tmp=std::complex<double>(a(0),0);
             for(arma::uword n=1;n<N;n++)
-                a_tmp+= a(n)*(cos(n*PI*k/K)-i*sin(n*PI*k/K));
+                a_tmp+= a(n)*(std::cos(n*PI*k/K)-i*std::sin(n*PI*k/K));
             h(k) = b_tmp/a_tmp;
         }
         return h;
