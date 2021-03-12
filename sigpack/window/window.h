@@ -131,10 +131,10 @@ namespace sp
     /// @param N Nr of taps
     /// @param beta Beta factor
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline arma::vec kaiser( const arma::uword N, double beta )
+    arma_inline arma::vec kaiser( const arma::uword N, arma::arma_flt beta )
     {
         arma::vec h(N);
-        double bb = besseli0(beta);
+        arma::arma_flt bb = besseli0(beta);
         for( arma::uword i=0; i<N; i++)
         {
             h[i] = besseli0(beta*sqrt(4.0*i*(N-1-i))/(N-1))/bb;

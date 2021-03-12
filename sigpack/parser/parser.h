@@ -44,24 +44,24 @@ namespace sp
             /// @returns Complex value
             /// @param str Complex notation string
             ////////////////////////////////////////////////////////////////////////////////////////////
-            std::complex<double> parse_cx(std::string str)
+            std::complex<arma::arma_flt> parse_cx(std::string str)
             {
-                double re,im;
+                arma::arma_flt re,im;
                 char i_ch;
                 std::stringstream iss(str);
 
                 // Parse full ...
-                if(iss >> re >> im >> i_ch && (i_ch=='i'|| i_ch=='j')) return std::complex<double>(re,im);
+                if(iss >> re >> im >> i_ch && (i_ch=='i'|| i_ch=='j')) return std::complex<arma::arma_flt>(re,im);
 
                 // ... or only imag
                 iss.clear();
                 iss.seekg(0,iss.beg);
-                if(iss >> im >> i_ch && (i_ch=='i'|| i_ch=='j')) return std::complex<double>(0.0,im);
+                if(iss >> im >> i_ch && (i_ch=='i'|| i_ch=='j')) return std::complex<arma::arma_flt>(0.0,im);
 
                 // .. or only real
                 iss.clear();
                 iss.seekg(0,iss.beg);
-                if(iss >> re) return std::complex<double>(re,0.0);
+                if(iss >> re) return std::complex<arma::arma_flt>(re,0.0);
 
                 // ... otherwise
                 err_handler("Could not parse complex number!");

@@ -29,7 +29,7 @@ namespace sp
         arma::Mat<T1> buf;       ///< Signal buffer
         arma::Mat<T2> b;         ///< Filter coefficients
         // Adaptive LMS FIR filter
-        double mu;               ///< Adaptive filter step size
+        arma::arma_flt mu;               ///< Adaptive filter step size
         arma::uword L;           ///< Adaptive filter block length
         arma::uword blk_ctr;     ///< Adaptive filter block length counter
         T2 c;                    ///< Adaptive filter NLMS regulation const.
@@ -37,7 +37,7 @@ namespace sp
         arma::Mat<T1> Q;         ///< Adaptive filter Process noise
         arma::Mat<T1> R;         ///< Adaptive filter Measurement noise
         arma::Mat<T1> K;         ///< Adaptive filter gain vector
-        double lmd;              ///< Adaptive filter RLS forgetting factor
+        arma::arma_flt lmd;              ///< Adaptive filter RLS forgetting factor
         arma::Mat<T1> X_tpz;     ///< Adaptive filter Toeplitz for Corr matrix calc.
         arma::uword do_adapt;    ///< Adaptive filter enable flag
     public:
@@ -152,7 +152,7 @@ namespace sp
         /// @param _mu Step size
         /// @param _L Block length
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_lms(const arma::uword _N, const double _mu, const  arma::uword _L=1)
+        void setup_lms(const arma::uword _N, const arma::arma_flt _mu, const  arma::uword _L=1)
         {
             M  = _N;
             mu = _mu;
@@ -190,7 +190,7 @@ namespace sp
                 // Block update
                 if(blk_ctr++%L==0)
                 {
-                      b+=2*mu*K/double(L);
+                      b+=2*mu*K/arma::arma_flt(L);
                       K.zeros();
                 }
             }
@@ -203,7 +203,7 @@ namespace sp
         /// @param _c Regularization factor
         /// @param _L Block length
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_nlms(const  arma::uword _N, const double _mu, const T2 _c, const  arma::uword _L=1)
+        void setup_nlms(const  arma::uword _N, const arma::arma_flt _mu, const T2 _c, const  arma::uword _L=1)
         {
             M  = _N;
             mu = _mu;
@@ -243,7 +243,7 @@ namespace sp
                 // Block update
                 if(blk_ctr++%L==0)
                 {
-                      b+=2*mu*K/double(L);
+                      b+=2*mu*K/arma::arma_flt(L);
                       K.zeros();
                 }
             }
@@ -256,7 +256,7 @@ namespace sp
         /// @param _c Regularization factor
         /// @param _L Block length
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_newt(const  arma::uword _N, const double _mu, const T2 _c, const  arma::uword _L=1)
+        void setup_newt(const  arma::uword _N, const arma::arma_flt _mu, const T2 _c, const  arma::uword _L=1)
         {
             M  = _N;
             mu = _mu;
@@ -313,7 +313,7 @@ namespace sp
         /// @param _lmd Lambda
         /// @param _P0 Inverse corr matrix initializer
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_rls(const arma::uword _N, const double _lmd,const double _P0)
+        void setup_rls(const arma::uword _N, const arma::arma_flt _lmd,const arma::arma_flt _P0)
         {
             M  = _N;
             lmd  = _lmd;
@@ -364,7 +364,7 @@ namespace sp
         /// @param _Q0 Process noise matrix initializer
         /// @param _R0 Measurement noise matrix initializer
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_kalman(const arma::uword _N, const double _P0, const double _Q0, const double _R0)
+        void setup_kalman(const arma::uword _N, const arma::arma_flt _P0, const arma::arma_flt _Q0, const arma::arma_flt _R0)
         {
             M  = _N;
             L = 1;
@@ -420,7 +420,7 @@ namespace sp
         /// \brief Get step size
         /// @return Step size mu
         ////////////////////////////////////////////////////////////////////////////////////////////
-        double get_step_size(void)
+        arma::arma_flt get_step_size(void)
         {
             return mu;
         }
@@ -447,7 +447,7 @@ namespace sp
         /// \brief Set step size
         /// @param _mu Step size mu
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void set_step_size(const double _mu)
+        void set_step_size(const arma::arma_flt _mu)
         {
             mu = _mu;
         }
@@ -608,7 +608,7 @@ namespace sp
     /// @param M Filter order
     /// @param f0 Filter cutoff frequency in interval [0..1]
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline arma::vec fir1(const arma::uword M, const double f0)
+    arma_inline arma::vec fir1(const arma::uword M, const arma::arma_flt f0)
     {
         arma::vec b(M+1), h(M+1);
         h = hamming(M+1);
@@ -627,7 +627,7 @@ namespace sp
     /// @param M Filter order (must be even)
     /// @param f0 Filter cutoff frequency in interval [0..1]
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline arma::vec fir1_hp(const arma::uword M, const double f0)
+    arma_inline arma::vec fir1_hp(const arma::uword M, const arma::arma_flt f0)
     {
         if(M%2 != 0)
             err_handler("Filter order must be even");
@@ -639,9 +639,9 @@ namespace sp
         }
 
         // Scale
-        std::complex<double> i(0,1);
-        double nrm;
-        arma::vec fv=arma::regspace(0,double(M));
+        std::complex<arma::arma_flt> i(0,1);
+        arma::arma_flt nrm;
+        arma::vec fv=arma::regspace(0,arma::arma_flt(M));
         nrm = abs(arma::sum(exp(-i*fv*PI)%b));
 
         return b/nrm;
@@ -656,7 +656,7 @@ namespace sp
     /// @param f0 Filter low cutoff frequency in interval [0..1]
     /// @param f1 Filter high cutoff frequency in interval [0..1]
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline arma::vec fir1_bp(const arma::uword M, const double f0, const double f1)
+    arma_inline arma::vec fir1_bp(const arma::uword M, const arma::arma_flt f0, const arma::arma_flt f1)
     {
         if(f1<=f0)
             err_handler("Frequencies must be [0 < f0 < f1 < 1]");
@@ -669,10 +669,10 @@ namespace sp
         }
 
         // Scale
-        double fc = (f0+f1)/2;
-        std::complex<double> i(0,1);
-        double nrm;
-        arma::vec fv=arma::regspace(0,double(M));
+        arma::arma_flt fc = (f0+f1)/2;
+        std::complex<arma::arma_flt> i(0,1);
+        arma::arma_flt nrm;
+        arma::vec fv=arma::regspace(0,arma::arma_flt(M));
         nrm = abs(arma::sum(exp(-i*fv*PI*fc)%b));
 
         return b/nrm;
@@ -687,7 +687,7 @@ namespace sp
     /// @param f0 Filter low cutoff frequency in interval [0..1]
     /// @param f1 Filter high cutoff frequency in interval [0..1]
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline arma::vec fir1_bs(const arma::uword M, const double f0, const double f1)
+    arma_inline arma::vec fir1_bs(const arma::uword M, const arma::arma_flt f0, const arma::arma_flt f1)
     {
         if(M%2 != 0)
             err_handler("Filter order must be even");
@@ -713,7 +713,7 @@ namespace sp
     /// @param M Filter length
     /// @param fd Fractional delay
     ////////////////////////////////////////////////////////////////////////////////////////////
-    arma_inline arma::vec fd_filter( const arma::uword M, double fd )
+    arma_inline arma::vec fd_filter( const arma::uword M, arma::arma_flt fd )
     {
         arma::vec h(M);
         arma::vec w = blackmanharris(M);
@@ -739,10 +739,10 @@ namespace sp
         arma::cx_vec h(K);
         arma::uword M = b.size();
         arma::uword N = a.size();
-        std::complex<double> b_tmp,a_tmp,i(0,1);
+        std::complex<arma::arma_flt> b_tmp,a_tmp,i(0,1);
         for(arma::uword k=0;k<K;k++)
         {
-            b_tmp=std::complex<double>(b(0),0);
+            b_tmp=std::complex<arma::arma_flt>(b(0),0);
             for(arma::uword m=1;m<M;m++)
                 b_tmp+= b(m)*(std::cos(m*PI*k/K)-i*std::sin(m*PI*k/K));
             a_tmp=std::complex<double>(a(0),0);
