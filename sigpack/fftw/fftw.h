@@ -38,9 +38,9 @@ namespace sp
             /// @param _N FFT length
             /// @param _alg FFTW algorithm selection
             ////////////////////////////////////////////////////////////////////////////////////////////
-            FFTW(unsigned int _N, int _alg = FFTW_ESTIMATE)
+            FFTW(unsigned int _zN, int _alg = FFTW_ESTIMATE)
             {
-                N = _N;
+                N = _zN;
                 R = 0;
                 C = 0;
                 alg = _alg;
@@ -57,10 +57,10 @@ namespace sp
             /// @param _C FFT Nr of cols
             /// @param _alg FFTW algorithm selection
             ////////////////////////////////////////////////////////////////////////////////////////////
-            FFTW(unsigned int _R, unsigned int _C, int _alg )
+            FFTW(unsigned int _R, unsigned int _zC, int _alg )
             {
                 R = _R;
-                C = _C;
+                C = _zC;
                 N = 0;
                 alg = _alg;
                 export_alg = FFTW_PATIENT;

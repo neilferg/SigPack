@@ -67,9 +67,9 @@ public:
     /// @param _Q Downsampling rate
     /// @param _H FIR filter coefficients
     ////////////////////////////////////////////////////////////////////////////////////////////
-    resampling(const arma::uword _P,const arma::uword _Q,const arma::vec _H)
+    resampling(const arma::uword _zP,const arma::uword _Q,const arma::vec _H)
     {
-        P = _P;
+        P = _zP;
         Q = _Q;
         H = _H;
         K = H.n_elem;
@@ -81,9 +81,9 @@ public:
     /// @param _P Upsampling rate
     /// @param _Q Downsampling rate
     ////////////////////////////////////////////////////////////////////////////////////////////
-    resampling(const arma::uword _P,const arma::uword _Q)
+    resampling(const arma::uword _zP,const arma::uword _Q)
     {
-        P = _P;
+        P = _zP;
         Q = _Q;
         arma::uword M=(P>Q)?P:Q;
         H = fir1(8*M,1.0f/M);

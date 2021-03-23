@@ -152,11 +152,11 @@ namespace sp
         /// @param _mu Step size
         /// @param _L Block length
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_lms(const arma::uword _N, const arma::arma_flt _mu, const  arma::uword _L=1)
+        void setup_lms(const arma::uword _zN, const arma::arma_flt _mu, const  arma::uword _zL=1)
         {
-            M  = _N;
+            M  = _zN;
             mu = _mu;
-            L  = _L;
+            L  = _zL;
             buf.set_size(M,1);buf.zeros();
             b.set_size(M,1);b.zeros();
             K.set_size(M,1);K.zeros();
@@ -203,11 +203,11 @@ namespace sp
         /// @param _c Regularization factor
         /// @param _L Block length
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_nlms(const  arma::uword _N, const arma::arma_flt _mu, const T2 _c, const  arma::uword _L=1)
+        void setup_nlms(const  arma::uword _zN, const arma::arma_flt _mu, const T2 _c, const  arma::uword _zL=1)
         {
-            M  = _N;
+            M  = _zN;
             mu = _mu;
-            L  = _L;
+            L  = _zL;
             c  = _c;
             buf.set_size(M,1);buf.zeros();
             b.set_size(M,1);b.zeros();
@@ -256,11 +256,11 @@ namespace sp
         /// @param _c Regularization factor
         /// @param _L Block length
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_newt(const  arma::uword _N, const arma::arma_flt _mu, const T2 _c, const  arma::uword _L=1)
+        void setup_newt(const  arma::uword _zN, const arma::arma_flt _mu, const T2 _c, const  arma::uword _zL=1)
         {
-            M  = _N;
+            M  = _zN;
             mu = _mu;
-            L  = _L;
+            L  = _zL;
             c  = _c;
             buf.set_size(M,1);buf.zeros();
             b.set_size(M,1);b.zeros();
@@ -313,9 +313,9 @@ namespace sp
         /// @param _lmd Lambda
         /// @param _P0 Inverse corr matrix initializer
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_rls(const arma::uword _N, const arma::arma_flt _lmd,const arma::arma_flt _P0)
+        void setup_rls(const arma::uword _zN, const arma::arma_flt _lmd,const arma::arma_flt _P0)
         {
-            M  = _N;
+            M  = _zN;
             lmd  = _lmd;
             L = 1;
             P.eye(M,M);
@@ -364,9 +364,9 @@ namespace sp
         /// @param _Q0 Process noise matrix initializer
         /// @param _R0 Measurement noise matrix initializer
         ////////////////////////////////////////////////////////////////////////////////////////////
-        void setup_kalman(const arma::uword _N, const arma::arma_flt _P0, const arma::arma_flt _Q0, const arma::arma_flt _R0)
+        void setup_kalman(const arma::uword _zN, const arma::arma_flt _P0, const arma::arma_flt _Q0, const arma::arma_flt _R0)
         {
-            M  = _N;
+            M  = _zN;
             L = 1;
             P.eye(M,M);
             P =_P0*P;

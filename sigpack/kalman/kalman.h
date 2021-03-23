@@ -140,11 +140,11 @@ namespace sp
             ////////////////////////////////////////////////////////////////////////////////////////////
             /// \brief Constructor.
             ////////////////////////////////////////////////////////////////////////////////////////////
-            KF(arma::uword _N,arma::uword _M,arma::uword _L)
+            KF(arma::uword _zN,arma::uword _M,arma::uword _zL)
             {
-                N = _N;   // Nr of states
+                N = _zN;   // Nr of states
                 M = _M;   // Nr of measurements/observations
-                L = _L;   // Nr of inputs
+                L = _zL;   // Nr of inputs
                 lin_proc = true;
                 lin_meas = true;
                 x.set_size(N,1); x.zeros();
@@ -178,9 +178,9 @@ namespace sp
             ////////////////////////////////////////////////////////////////////////////////////////////
             void set_state_vec(const arma::mat& _x)       { x = _x;   }    // Set state vector.[Nx1]
             void set_trans_mat(const arma::mat& _A)       { A = _A;   }    // Set state transition matrix.[NxN]
-            void set_control_mat(const arma::mat& _B)     { B = _B;   }    // Set input matrix.[NxL]
+            void set_control_mat(const arma::mat& _zB)     { B = _zB;   }    // Set input matrix.[NxL]
             void set_meas_mat(const arma::mat& _H)        { H = _H;   }    // Set measurement matrix.[MxN]
-            void set_err_cov(const arma::mat& _P)         { P = _P;   }    // Set error covariance matrix.[NxN]
+            void set_err_cov(const arma::mat& _zP)         { P = _zP;   }    // Set error covariance matrix.[NxN]
             void set_proc_noise(const arma::mat& _Q)      { Q = _Q;   }    // Set process noise cov. matrix.
             void set_meas_noise(const arma::mat& _R)      { R = _R;   }    // Set meas noise cov. matrix.
             void set_kalman_gain(const arma::mat& _K)     { K = _K;   }    // Set Kalman gain matrix.[NxM]
@@ -295,7 +295,7 @@ namespace sp
             arma::arma_flt dx;              ///< Finite difference approximation step size
         public:
 
-            EKF(arma::uword _N,arma::uword _M,arma::uword _L): KF(_N,_M,_L)
+            EKF(arma::uword _zN,arma::uword _M,arma::uword _zL): KF(_zN,_M,_zL)
             {
                 dx = 1e-7;  // Default diff step size
             }
@@ -522,15 +522,15 @@ namespace sp
             arma::vec Wp;        ///< Weights covariance
         public:
 
-            UKF(arma::uword _N,arma::uword _M,arma::uword _L): KF(_N,_M,_L)
+            UKF(arma::uword _zN,arma::uword _M,arma::uword _zL): KF(_zN,_M,_zL)
             {
                 alpha  = 1e-3;
                 beta   = 2.0;
                 kappa  = 0;
-                lambda = alpha*alpha*(_N+kappa)-_N;
-                X.set_size(_N,2*_N+1);X.zeros();
-                Wx.set_size(2*_N+1);Wx.zeros();
-                Wp.set_size(2*_N+1);Wp.zeros();
+                lambda = alpha*alpha*(_zN+kappa)-_zN;
+                X.set_size(_zN,2*_zN+1);X.zeros();
+                Wx.set_size(2*_zN+1);Wx.zeros();
+                Wp.set_size(2*_zN+1);Wp.zeros();
             }
 
             ////////////////////////////////////////////////////////////////////////////////////////////
@@ -565,10 +565,10 @@ namespace sp
             /// @param _x State matrix
             /// @param _P Covariance matrix
             ////////////////////////////////////////////////////////////////////////////////////////////
-            void update_sigma(const arma::mat& _x, const arma::mat& _P )
+            void update_sigma(const arma::mat& _x, const arma::mat& _zP )
             {
                 // Update sigma points using Cholesky decomposition
-                arma::mat _A = sqrt(N + lambda)*arma::chol(_P,"lower");
+                arma::mat _A = sqrt(N + lambda)*arma::chol(_zP,"lower");
 
                 X = arma::repmat(_x,1,2*N+1);
                 X.cols(1  ,  N) += _A;
@@ -578,7 +578,7 @@ namespace sp
             ////////////////////////////////////////////////////////////////////////////////////////////
             /// \brief Calculate unscented transform
             ////////////////////////////////////////////////////////////////////////////////////////////
-            arma::mat ut( const arma::mat& _x, const arma::mat& _P, const fcn_v _f )
+            arma::mat ut( const arma::mat& _x, const arma::mat& _zP, const fcn_v _f )
             {
                 arma::uword Ny = static_cast<arma::uword>(_f.size());
                 arma::mat y(Ny,1);
@@ -586,7 +586,7 @@ namespace sp
                 C.set_size(N,Ny);
 
                 update_weights();
-                update_sigma(_x,_P);
+                update_sigma(_x,_zP);
 
                 // Propagate sigma points through nonlinear function
                 arma::mat Xy(Ny,2*N+1);
