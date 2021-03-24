@@ -44,7 +44,9 @@
 #include "resampling/resampling.h"
 #include "spectrum/spectrum.h"
 #include "timing/timing.h"
-//#include "gplot/gplot.h" // not baremetal
+#ifdef __linux__ // not baremetal
+#include "gplot/gplot.h"
+#endif
 #include "parser/parser.h"
 #ifdef HAVE_FFTW
   #include "fftw/fftw.h"
